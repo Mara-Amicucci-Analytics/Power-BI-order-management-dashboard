@@ -303,7 +303,7 @@ The procedure compares the latest recorded Sub Owner for each customer with the 
 
 This creates a historical event log without storing unnecessary duplicate daily records.
 
-###Simplified SQL Example
+### Simplified SQL Example
 
 ```sql
 WITH latest_status AS (
