@@ -170,6 +170,58 @@ This allows each order to be automatically classified into the team or action mo
 
 > This is a simplified representation of the production logic. The real solution contains many additional rules and combinations evaluated in priority order.
 
+### Example Rule
+
+```sql
+CASE
+    WHEN rfs_status = 'Blocked by RFSI'
+         AND rfsi_case IS NOT NULL
+        THEN 'RFSi With Case'
+
+    WHEN survey_status = 'Completed'
+         AND installation_date >= CURRENT_DATE
+        THEN 'Install Booked'
+
+    WHEN installation_status = 'On Hold'
+         AND open_enablement_case = TRUE
+        THEN 'Awaiting Consent'
+
+    WHEN installation_date < CURRENT_DATE
+         AND service_live = FALSE
+        THEN 'Admin Fix - Install'
+
+    ELSE 'Other'
+END
+```
+
+### Evolution in OB3
+
+The same business-rule framework was reused when the Orderbook was rebuilt in Power BI.
+
+The classification logic was moved into the semantic model using DAX and expanded to use Salesforce Lightning data, including related work orders, service appointments and Get Help cases.
+
+```DAX
+Sub Owner =
+SWITCH(
+    TRUE(),
+
+    [Rank Duplicate Orders] > 1,
+    "Potential Duplicate",
+
+    [RFS Status] = "Blocked by RFSI"
+        && NOT ISBLANK([RFSi Case]),
+    "RFSi with Case",
+
+    [CAD Status] = "On Hold"
+        && [Open Enablement Case] = TRUE,
+    "Awaiting Consent",
+
+    [CAD Date] >= TODAY(),
+    "Install Booked",
+
+    "Unassigned"
+)
+```
 ---
 
 # SQL Example
@@ -343,39 +395,7 @@ Process Mapping · Stakeholder Requirements · Business Rules · Ownership Logic
 
 # Project Journey
 
-```text
-Before 2024
-Excel Orderbook
-Salesforce Legacy
-        ↓
-
-2024
-Salesforce transformation begins
-        ↓
-Orders → Salesforce Legacy
-Installations → Salesforce FSL
-        ↓
-OB2 created
-PostgreSQL + Power BI
-        ↓
-
-2026
-Salesforce Lightning introduced
-        ↓
-Orders → Legacy + Lightning
-Installations → FSL
-        ↓
-OB3 created
-Power Automate + SharePoint
-Power Query + Power BI
-        ↓
-
-Future
-Full migration to Salesforce Lightning
-        ↓
-OB3 becomes the main Orderbook
-OB2 retired
-```
+![Project Journey](images/ob-project-journey.png)
 
 ---
 
