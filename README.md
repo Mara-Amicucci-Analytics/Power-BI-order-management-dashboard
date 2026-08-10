@@ -142,6 +142,16 @@ Power BI
         ↓
 OB3
 ```
+This allowed the business to start managing Lightning orders without waiting for the full Snowflake data pipeline to be completed.
+
+The transformation and ownership logic were rebuilt mainly in **Power BI and Power Query**.
+
+Once the required data becomes available in Snowflake, the SharePoint-based source will be replaced while keeping the reporting logic and dashboard structure largely unchanged.
+
+OB2 and OB3 currently run alongside each other. Once the migration to Salesforce Lightning is complete, OB2 will eventually be retired.
+
+OB3 was an **interim solution designed around a real business urgency**, rather than SharePoint being the preferred architecture.
+
 ---
 
 # Turning Data Into Action
