@@ -292,7 +292,7 @@ FROM orders;
 
 ---
 
-#Tracking Order Movement
+# Tracking Order Movement
 
 To understand how orders move through the operational process, I created a **daily tracking stored procedure** in PostgreSQL.
 
