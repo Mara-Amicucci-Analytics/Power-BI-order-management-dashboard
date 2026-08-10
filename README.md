@@ -125,23 +125,50 @@ Identifies the department responsible for progressing the order.
 
 Identifies the specific scenario and expected next action.
 
+---
+
+## Business Logic
 ![Business logic](images/ob-business-logic.png)
 
 This converts complex operational data into something teams can immediately act on.
 
----
+A key part of the Orderbook was translating a large number of operational signals into a clear **Sub Owner** and **Next Action**.
 
-## Simplified Example
+The production logic evaluates multiple conditions in priority order, including:
 
-| Owner | Scenario | Action |
+- Order and service status
+- RFS / RFSi status
+- Installation and survey work orders
+- Appointment dates and booking status
+- Open operational cases
+- Activation status
+- Contribution and consent requirements
+- Duplicate orders
+- Network and provisioning issues
+- Data-quality exceptions
+
+This allows each order to be automatically classified into the team or action most likely required to progress it.
+
+### Simplified Logic Example
+
+| Scenario | Example Conditions | Classification / Action |
 |---|---|---|
-| Installation | Booking Required | Contact customer and book installation |
-| Technical | Technical Issue | Investigate and resolve blocker |
-| Operations | Data Issue | Correct system records |
-| Customer | Customer Action | Contact customer |
-| Scheduled | Appointment Booked | Monitor |
+| **Pre-Order** | Property not yet ready for service and no installation booked | Pre-Order |
+| **RFSi Issue** | Property blocked by RFSi | RFSi With Case / RFSi Without Case |
+| **Install Booked** | Active installation work order with a future appointment | Install Booked |
+| **Survey Required** | Survey exists but still requires an appointment | Survey Booking Required |
+| **Survey Complete** | Survey completed but installation still needs booking | Survey Completed / Booking Awaiting |
+| **Consent Required** | Installation on hold with an open Enablement case | Awaiting Consent |
+| **Customer Action** | Contribution or customer action required before work can continue | Contribution Required / Customer Action |
+| **Installation Exception** | Appointment missed, invalid work-order state or conflicting statuses | Admin Fix - Install |
+| **Survey Exception** | Survey appointment or work-order status is inconsistent | Admin Fix - Survey |
+| **Activation Pending** | Installation completed but service is not yet active | Awaiting Activation / Assets in Transit |
+| **Network Issue** | Completed P2P installation without required network information | Missing Switchport |
+| **Duplicate Order** | Multiple active orders detected for the same account | Potential Duplicate |
+| **Legacy Active Service** | Service still active in the legacy platform | Live Service in Legacy |
+| **Data / System Issue** | Required records, work orders or system information are missing | Admin Fix |
 
-> The real production rules are more detailed and have been simplified for this portfolio.
+> This is a simplified representation of the production logic. The real solution contains many additional rules and combinations evaluated in priority order.
 
 ---
 
