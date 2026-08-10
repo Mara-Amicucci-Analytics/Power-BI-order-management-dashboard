@@ -119,14 +119,17 @@ So I created **OB3**.
 
 With the Salesforce transformation, the long-term data platform is moving from **PostgreSQL to Snowflake**.
 
-However, Snowflake was not yet ready to support the Orderbook because not all required Salesforce Lightning data had been engineered into the platform.
+However, not all Salesforce Lightning data was available in Snowflake yet, while the number of new orders in Lightning was increasing quickly.
 
-At the same time, the number of orders being placed in Salesforce Lightning was increasing, creating an urgent need for a temporary reporting solution.
+To avoid waiting for the full data engineering work to be completed, I created an interim solution.
 
-I therefore created an interim data pipeline:
+For **orders and customer data**, I used Salesforce Reports exported automatically through Power Automate and stored in SharePoint.
+
+For **installation and site survey data**, I reused the existing PostgreSQL functions originally built for OB2.
 
 ```text
 Salesforce Lightning
+Orders + Customer Data
         ↓
 Salesforce Reports
         ↓
@@ -134,7 +137,14 @@ Power Automate
         ↓
 SharePoint
         ↓
-Power Query
+        ┐
+        │
+        ├──→ Power Query
+        │
+PostgreSQL Functions
+Installation + Site Survey
+        │
+        ┘
         ↓
 Business Logic
         ↓
@@ -142,15 +152,12 @@ Power BI
         ↓
 OB3
 ```
-This allowed the business to start managing Lightning orders without waiting for the full Snowflake data pipeline to be completed.
+This hybrid approach allowed me to deliver OB3 quickly while reusing proven components from OB2.
 
-The transformation and ownership logic were rebuilt mainly in **Power BI and Power Query**.
+It also demonstrated that the original OB2 structure was **scalable and reusable**, as the installation and site survey logic could be carried forward into the new solution rather than rebuilt from scratch.
 
-Once the required data becomes available in Snowflake, the SharePoint-based source will be replaced while keeping the reporting logic and dashboard structure largely unchanged.
+Once the required Salesforce Lightning data is fully available in Snowflake, the SharePoint source can be replaced while keeping most of the reporting and business logic unchanged.
 
-OB2 and OB3 currently run alongside each other. Once the migration to Salesforce Lightning is complete, OB2 will eventually be retired.
-
-OB3 was an **interim solution designed around a real business urgency**, rather than SharePoint being the preferred architecture.
 
 ---
 
@@ -443,11 +450,13 @@ OB2 retired
 
 # Key Takeaway
 
-This project shows how the same business problem can require very different technical solutions as systems evolve.
+This project shows how I designed a reporting solution that could evolve with major system changes.
 
-**OB2** showcases my SQL and PostgreSQL skills.
+**OB2** demonstrates my SQL and PostgreSQL skills.
 
-**OB3** showcases my Power BI, Power Query and automation skills.
+**OB3** demonstrates my Power BI, Power Query and automation skills, while also reusing parts of the original OB2 architecture.
+
+The ability to reuse the installation and site survey logic shows that the original solution was designed in a way that was **scalable, modular and adaptable**.
 
 Both are built around the same principle:
 
