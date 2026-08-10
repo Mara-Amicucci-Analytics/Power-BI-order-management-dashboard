@@ -16,14 +16,7 @@ The solution has evolved as the business grew and moved from Salesforce Legacy t
 
 The order journey became increasingly complex as systems changed.
 
-```text
-Before 2024
-Orders + Installations
-        ↓
-Salesforce Legacy
-        ↓
-Excel Orderbook
-```
+![Before 2024](images/ob-before-2024.png)
 
 The original Orderbook was created in Excel when the customer base was much smaller.
 
@@ -31,26 +24,7 @@ In **2024**, the Salesforce transformation started.
 
 Orders continued to be managed in Salesforce Legacy, but installations moved to the new Salesforce Field Service environment.
 
-```text
-2024
-
-Salesforce Legacy
-     Orders
-       │
-       ├──────────────┐
-       │              │
-       ↓              ↓
-Customer Data       Salesforce FSL
-                    Installations
-       │              │
-       └──────┬───────┘
-              ↓
-          PostgreSQL
-              ↓
-             OB2
-              ↓
-           Power BI
-```
+![2024](images/ob-2024.png)
 
 This created the need for a more scalable Orderbook capable of combining information from both systems.
 
@@ -100,14 +74,7 @@ Orders can now exist in either:
 
 while installations continue to be managed in **Salesforce Field Service**.
 
-```text
-Salesforce Legacy ─────┐
-                       │
-Salesforce Lightning ──┼── Orders
-                       │
-Salesforce FSL ─────────┘
-        Installations
-```
+![2026](images/ob-2026-1.png)
 
 This meant OB2 alone could no longer provide the full operational picture.
 
@@ -127,31 +94,8 @@ For **orders and customer data**, I used Salesforce Reports exported automatical
 
 For **installation and site survey data**, I reused the existing PostgreSQL functions originally built for OB2.
 
-```text
-Salesforce Lightning
-Orders + Customer Data
-        ↓
-Salesforce Reports
-        ↓
-Power Automate
-        ↓
-SharePoint
-        ↓
-        ┐
-        │
-        ├──→ Power Query
-        │
-PostgreSQL Functions
-Installation + Site Survey
-        │
-        ┘
-        ↓
-Business Logic
-        ↓
-Power BI
-        ↓
-OB3
-```
+![2026](images/ob-2026-3.png)
+
 This hybrid approach allowed me to deliver OB3 quickly while reusing proven components from OB2.
 
 It also demonstrated that the original OB2 structure was **scalable and reusable**, as the installation and site survey logic could be carried forward into the new solution rather than rebuilt from scratch.
@@ -181,22 +125,7 @@ Identifies the department responsible for progressing the order.
 
 Identifies the specific scenario and expected next action.
 
-```text
-Order Status
-Installation Status
-Cases
-Work Orders
-Appointments
-Property Status
-        ↓
-Business Rules
-        ↓
-Master Owner
-        ↓
-Sub Owner
-        ↓
-Next Action
-```
+![Business logic](images/ob-business-logic.png)
 
 This converts complex operational data into something teams can immediately act on.
 
@@ -211,7 +140,6 @@ This converts complex operational data into something teams can immediately act 
 | Operations | Data Issue | Correct system records |
 | Customer | Customer Action | Contact customer |
 | Scheduled | Appointment Booked | Monitor |
-| Unassigned | New Scenario | Investigate and update logic |
 
 > The real production rules are more detailed and have been simplified for this portfolio.
 
