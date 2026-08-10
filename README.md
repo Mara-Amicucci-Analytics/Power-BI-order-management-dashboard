@@ -134,7 +134,7 @@ This converts complex operational data into something teams can immediately act 
 
 A key part of the Orderbook was translating a large number of operational signals into a clear **Sub Owner** and **Next Action**.
 
-The production logic evaluates multiple conditions in priority order, including:
+The production logic evaluates multiple conditions, including:
 
 - Order and service status
 - RFS / RFSi status
@@ -168,7 +168,7 @@ This allows each order to be automatically classified into the team or action mo
 | **Legacy Active Service** | Service still active in the legacy platform | Live Service in Legacy |
 | **Data / System Issue** | Required records, work orders or system information are missing | Admin Fix |
 
-> This is a simplified representation of the production logic. The real solution contains many additional rules and combinations evaluated in priority order.
+> This is a simplified representation of the production logic. The real solution contains many additional rules and combinations evaluated.
 
 ### Example Rule
 
@@ -292,30 +292,90 @@ FROM orders;
 
 ---
 
-# Tracking Order Movement
+#Tracking Order Movement
 
-I also created an ownership tracker to understand how orders move through the process.
+To understand how orders move through the operational process, I created a **daily tracking stored procedure** in PostgreSQL.
+
+The procedure compares the latest recorded Sub Owner for each customer with the current Orderbook classification. A new tracking record is only added when:
+
+- The order is new, or
+- The Sub Owner has changed since the last recorded event
+
+This creates a historical event log without storing unnecessary duplicate daily records.
+
+###Simplified SQL Example
 
 ```sql
+WITH latest_status AS (
+    SELECT
+        customer_id,
+        sub_owner AS previous_sub_owner
+    FROM order_tracker
+    WHERE event_id IN (
+        SELECT MAX(event_id)
+        FROM order_tracker
+        GROUP BY customer_id
+    )
+),
+
+current_status AS (
+    SELECT
+        customer_id,
+        service_id,
+        sub_owner AS current_sub_owner
+    FROM current_orderbook
+)
+
+INSERT INTO order_tracker (
+    customer_id,
+    service_id,
+    sub_owner,
+    event_date
+)
+
 SELECT
-    order_id,
-    snapshot_date,
-    owner,
+    customer_id,
+    service_id,
+    current_sub_owner,
+    CURRENT_DATE
 
-    LAG(owner) OVER (
-        PARTITION BY order_id
-        ORDER BY snapshot_date
-    ) AS previous_owner
+FROM latest_status
+FULL OUTER JOIN current_status
+USING (customer_id)
 
-FROM order_history;
+WHERE
+    previous_sub_owner <> current_sub_owner
+    OR previous_sub_owner IS NULL;
 ```
 
-This allows the report to identify:
+The procedure also stores a **daily snapshot of the number of orders in each Master Owner and Sub Owner**, allowing historical backlog levels to be recreated for any previous date.
 
-- How long orders remain with each team
+```sql
+INSERT INTO daily_order_counts
+
+SELECT
+    master_owner,
+    sub_owner,
+    COUNT(*) AS orders,
+    CURRENT_DATE
+
+FROM current_orderbook
+
+GROUP BY
+    master_owner,
+    sub_owner;
+```
+
+This historical tracking allows the report to analyse:
+
+- How orders move between teams and process stages
+- How long orders remain within each Sub Owner
 - Where orders are getting stuck
-- Changes in operational backlog
-- Process bottlenecks
+- Changes in operational backlog over time
+- Process bottlenecks and recurring problem areas
+- How ownership volumes change between teams
+
+>The production stored procedure contains additional controls to prevent duplicate daily snapshots and maintain the historical tracking tables.
 
 ---
 
