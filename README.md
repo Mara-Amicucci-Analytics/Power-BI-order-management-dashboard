@@ -117,9 +117,13 @@ So I created **OB3**.
 
 ## OB3 — Power BI-Driven Orderbook
 
-Salesforce Lightning data was not available directly in the PostgreSQL database.
+With the Salesforce transformation, the long-term data platform is moving from **PostgreSQL to Snowflake**.
 
-I therefore created a different architecture.
+However, Snowflake was not yet ready to support the Orderbook because not all required Salesforce Lightning data had been engineered into the platform.
+
+At the same time, the number of orders being placed in Salesforce Lightning was increasing, creating an urgent need for a temporary reporting solution.
+
+I therefore created an interim data pipeline:
 
 ```text
 Salesforce Lightning
@@ -137,13 +141,6 @@ Business Logic
 Power BI
         ↓
 OB3
-```
-
-Instead of recreating the SQL pipeline, I rebuilt the transformation and ownership logic mainly inside **Power BI and Power Query**.
-
-OB2 and OB3 currently run alongside each other.
-
-Once all customers are migrated to Salesforce Lightning, OB2 will eventually be retired.
 
 ---
 
