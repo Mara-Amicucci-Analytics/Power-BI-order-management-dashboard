@@ -141,7 +141,7 @@ Business Logic
 Power BI
         ↓
 OB3
-
+```
 ---
 
 # Turning Data Into Action
