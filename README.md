@@ -45,19 +45,7 @@ Multiple SQL functions progressively combine:
 
 The final dataset applies custom business logic before being loaded into Power BI.
 
-```text
-Multiple Data Sources
-        ↓
-PostgreSQL
-        ↓
-SQL Functions
-        ↓
-Business Logic
-        ↓
-Final Dataset
-        ↓
-Power BI
-```
+![OB2](images/ob-ob2-solution.png)
 
 This replaced a spreadsheet-based process with a much more scalable reporting solution.
 
