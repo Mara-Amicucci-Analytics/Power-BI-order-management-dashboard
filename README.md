@@ -379,6 +379,8 @@ Most of the transformation is now performed using:
 - **Power Automate** for Salesforce extraction
 - **SharePoint** as the staging layer
 
+![SOQL](images/soql-query.png)
+
 A simplified Power Query ownership rule:
 
 ```powerquery
