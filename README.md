@@ -457,7 +457,7 @@ This became especially important during the Salesforce transformation, where ord
 
 ## Owner / Sub Owner Tracker
 
-![Owner Analysis](images/su-owner-dax.png)
+![Owner Analysis](images/sub-owner-dax.png)
 
 ## Data Model
 
