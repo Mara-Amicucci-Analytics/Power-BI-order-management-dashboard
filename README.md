@@ -453,23 +453,15 @@ This became especially important during the Salesforce transformation, where ord
 
 ## Order Management Dashboard
 
-![Order Management Dashboard](images/orderbook-dashboard.png)
+![Order Management Dashboard](images/ob-overview.png)
 
-## Owner / Sub Owner Analysis
+## Owner / Sub Owner Tracker
 
-![Owner Analysis](images/owner-analysis.png)
+![Owner Analysis](images/su-owner-dax.png)
 
-## Operational Trends
+## Data Model
 
-![Operational Trends](images/order-trends.png)
-
-## Order Investigation
-
-![Order Investigation](images/order-investigation.png)
-
-## Architecture
-
-![Orderbook Architecture](images/orderbook-architecture.png)
+![Orderbook Architecture](images/ob-data-model.png)
 
 ---
 
