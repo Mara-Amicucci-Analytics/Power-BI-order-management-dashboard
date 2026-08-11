@@ -381,20 +381,6 @@ Most of the transformation is now performed using:
 
 ![SOQL](images/soql-query.png)
 
-A simplified Power Query ownership rule:
-
-```powerquery
-= Table.AddColumn(
-    PreviousStep,
-    "Owner",
-    each
-        if [InstallStatus] = "Technical Issue" then "Technical"
-        else if [AppointmentDate] <> null then "Scheduled"
-        else if [OrderStatus] = "Pending" then "Operations"
-        else "Unassigned"
-)
-```
-
 ---
 
 # Business Impact
