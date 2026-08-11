@@ -276,7 +276,7 @@ FROM orders;
 
 ### SQL Skills
 
-`CTEs` · `JOINs` · `CASE` · `ROW_NUMBER()` · `PARTITION BY` · `COALESCE` · Window Functions · Data Transformation
+`CTEs` · `JOINs` · `CASE` · `ROW_NUMBER()` · `PARTITION BY` · `COALESCE` · `Window Functions` · `Data Transformation`
 
 ---
 
@@ -428,16 +428,16 @@ This became especially important during the Salesforce transformation, where ord
 # Skills Demonstrated
 
 **SQL & Data Engineering**  
-PostgreSQL · CTEs · JOINs · CASE · Window Functions · Data Transformation
+`PostgreSQL` · `CTEs` · `JOINs` · `CASE` · `Window Functions` · `Data Transformation`
 
 **Power BI**  
-Power Query · DAX · Data Modelling · Dashboard Design · Operational Reporting
+`Power Query` · `DAX` · `Data Modelling` · `Dashboard Design` · `Operational Reporting`
 
 **Automation**  
-Power Automate · Salesforce Extraction · SharePoint Integration
+`Power Automate` · `Salesforce Extraction` · `SharePoint Integration` · `SOQL Query`
 
 **Business Analysis**  
-Process Mapping · Stakeholder Requirements · Business Rules · Ownership Logic · Operational Problem Solving
+`Process Mapping` · `Stakeholder Requirements` · `Business Rules` · `Ownership Logic` · `Operational Problem Solving`
 
 ---
 
